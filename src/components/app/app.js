@@ -5,6 +5,7 @@ import SearchPanel from '../search-panel/search-panel'
 import AppFilter from '../app-filter/app-filter'
 import MovieList from '../movie-list/movie-list'
 import MoviesAddForm from '../movies-add-form/movies-add-form'
+import { v4 as uuidv4 } from 'uuid' 
 import './app.css'
 
 
@@ -20,21 +21,39 @@ class App extends Component {
     }
   }
 
-  onDelete = id => {
-    this.setState(({ data }) => {
-      // const index = data.findIndex(c => c.id === id )
-      // data.splice(index, 1) BU MUTABLE
-      const newArr = data.filter(c => c.id != id)
-      console.log(newArr);
+  // onDelete = id => {
+  //   this.setState(({ data }) => {
+  //     // const index = data.findIndex(c => c.id === id )
+  //     // data.splice(index, 1) BU MUTABLE bu tugridan tugri uzgartirildi
+  //    const newArr = data.filter(c => c.id !== id)  // bu esa immutable bulli chunki bunga yangi uzgaruvchi yaratib usha uzgaruvchi orqali datani uzgartirildi
+  //     console.log(newArr);
 
-      return {
-        data,
-      }
-    })
+  //     return {
+  //       data:newArr,
+  //     }
+  //   })
+  // }
+
+onDelete = id => {
+    this.setState(({ data }) =>({
+      data: data.filter(c => c.id !== id),
+    }))
   }
-  render() {
 
+  addForm = item => {
+    this.setState(({ data }) => ({
+      data: [...data, { ...item, id: uuidv4() }],
+      }))
+  }
+// addForm =  item => {
+//   this.setState(({ data }) => ({
+//     data: [...data, item],
+//   }))
+// }
+
+  render() {
     const { data } = this.state
+
     return (
       <div className='app font-monospace'>
           <div className='content'>
@@ -44,7 +63,7 @@ class App extends Component {
               <AppFilter />
             </div>
             <MovieList data={data} onDelete={this.onDelete}/>
-            <MoviesAddForm />
+            <MoviesAddForm addForm= {this.addForm} />
           </div>
       </div>
     )
