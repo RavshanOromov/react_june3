@@ -14,9 +14,9 @@ class App extends Component {
     super(props)
     this.state = {
        data: [
-        {name: 'Empire of Osman', viewers: 658, favourite: true, id: 1},
-        {name: 'Osman', viewers: 428, favourite: false, id: 2},
-        {name: 'Empire of Omar', viewers: 988, favourite: true, id: 3},
+        {name: 'Empire of Osman', viewers: 658, favourite: false,  like: false, id: 1},
+        {name: 'Osman', viewers: 428, favourite: false, like: false, id: 2},
+        {name: 'Empire of Omar', viewers: 988, favourite: false, like: false, id: 3},
       ],
     }
   }
@@ -40,9 +40,10 @@ onDelete = id => {
     }))
   }
 
-  addForm = item => {
+addForm = item => {
+    const newItem = {name: item.name, viewers: item.viewers, id: uuidv4(), favourite: true, like: true }
     this.setState(({ data }) => ({
-      data: [...data, { ...item, id: uuidv4() }],
+      data: [...data, ...newItem ],
       }))
   }
 // addForm =  item => {
@@ -50,6 +51,13 @@ onDelete = id => {
 //     data: [...data, item],
 //   }))
 // }
+
+onToggleFavourite = id => {
+  console.log(`Favourite ${id}`);
+}
+onToggleLike = id => {
+  console.log(`Like ${id}`);
+}
 
   render() {
     const { data } = this.state
@@ -62,7 +70,7 @@ onDelete = id => {
               <SearchPanel />
               <AppFilter />
             </div>
-            <MovieList data={data} onDelete={this.onDelete}/>
+            <MovieList onToggleFavourite={this.onToggleFavourite} onToggleLike={this.onToggleLike} data={data} onDelete={this.onDelete}/>
             <MoviesAddForm addForm= {this.addForm} />
           </div>
       </div>
