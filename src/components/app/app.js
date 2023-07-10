@@ -43,7 +43,7 @@ onDelete = id => {
 addForm = item => {
     const newItem = {name: item.name, viewers: item.viewers, id: uuidv4(), favourite: true, like: true }
     this.setState(({ data }) => ({
-      data: [...data, ...newItem ],
+      data: [...data, newItem ],
       }))
   }
 // addForm =  item => {
