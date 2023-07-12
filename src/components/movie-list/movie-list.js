@@ -1,7 +1,7 @@
 import './movie-list.css'
 import MovieListItem from '../movie-list-item/movie-list-item'
 
-const MovieList = ({ data, onDelete, onToggleFavourite, onToggleLike}) => {
+const MovieList = ({ data, onDelete, onToggleProp}) => {
   return (
     <ul className='movie-list'>
        {data.map(item => (
@@ -11,8 +11,9 @@ const MovieList = ({ data, onDelete, onToggleFavourite, onToggleLike}) => {
         like={item.like}
         favourite={item.favourite}
         onDelete={() => onDelete(item.id)}
-        onToggleFavourite={() => onToggleFavourite(item.id)}
-        onToggleLike={() => onToggleLike(item.id)}
+        // onToggleFavourite={() => onToggleFavourite(item.id)}
+        // onToggleLike={() => onToggleLike(item.id)}
+        onToggleProp={ e => onToggleProp(item.id, e.currentTarget.getAttribute('data-toggle'))}
          />
         // <MovieListItem name={item.name} viewers={item.viewers} favourite={item.favourite} tepadaki 8ci qatordagi kod bn bir xil lekin 8ci qatordaki code more professionlal hisoblanadi/>
        ))}

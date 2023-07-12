@@ -18,6 +18,8 @@ class App extends Component {
         {name: 'Osman', viewers: 428, favourite: false, like: false, id: 2},
         {name: 'Empire of Omar', viewers: 988, favourite: false, like: false, id: 3},
       ],
+      term: '',
+      filter: '',
     }
   }
 
@@ -41,7 +43,7 @@ onDelete = id => {
   }
 
 addForm = item => {
-    const newItem = {name: item.name, viewers: item.viewers, id: uuidv4(), favourite: true, like: true }
+    const newItem = {name: item.name, viewers: item.viewers, id: uuidv4(), favourite: false, like: false }
     this.setState(({ data }) => ({
       data: [...data, newItem ],
       }))
@@ -52,25 +54,62 @@ addForm = item => {
 //   }))
 // }
 
-onToggleFavourite = id => {
-  console.log(`Favourite ${id}`);
-}
-onToggleLike = id => {
-  console.log(`Like ${id}`);
+onToggleProp = (id, prop) => {
+  this.setState(({ data }) => ({
+    data: data.map(item => {
+      if (item.id === id) {
+        return { ...item, [prop]: !item[prop] }
+      }
+      return item
+    }),
+  }))
 }
 
+searchHandler = (arr, term) => {
+  if (term.length === 0) {
+    return arr
+  }
+  return arr.filter(item => item.name.toLowerCase().indexOf(term) > -1)
+}
+
+updateTermHandler = term => {this.setState({ term })}
+
+filterHandler = (arr, filter) => {
+  switch (filter) {
+    case 'popular':
+      return arr.filter(c => c.like)
+    case 'mostViewers': 
+      return arr.filter(c => c.viewers > 800)
+    default:
+      return arr
+  }
+}
+
+  updateFilterHandler = filter => this.setState({ filter })
+
+
+// onToggleFavourite = id => {
+//   console.log(`Favourite ${id}`);
+// }
+// onToggleLike = id => {
+//   console.log(`Like ${id}`);
+// }
+
   render() {
-    const { data } = this.state
+    const { data, term, filter } = this.state
+    const allMoviesCount = data.length
+    const favouriteMovieCount = data.filter(c => c.favourite).length
+    const visibleData = this.filterHandler(this.searchHandler(data, term), filter)
 
     return (
       <div className='app font-monospace'>
           <div className='content'>
-            <AppInfo />
+            <AppInfo allMoviesCount={allMoviesCount} favouriteMoviesCount={favouriteMovieCount} />
             <div className='search-panel' >
-              <SearchPanel />
-              <AppFilter />
+              <SearchPanel updateTermHandler={this.updateTermHandler} />
+              <AppFilter filter={filter} updateFilterHandler={this.updateFilterHandler} />
             </div>
-            <MovieList onToggleFavourite={this.onToggleFavourite} onToggleLike={this.onToggleLike} data={data} onDelete={this.onDelete}/>
+            <MovieList onToggleProp={this.onToggleProp}  data={visibleData} onDelete={this.onDelete}/>
             <MoviesAddForm addForm= {this.addForm} />
           </div>
       </div>

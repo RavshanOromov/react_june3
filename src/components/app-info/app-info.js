@@ -1,11 +1,11 @@
 import './app-info.css'
 
-const AppInfo = () => {
+const AppInfo = ({ allMoviesCount, favouriteMoviesCount }) => {
   return (
     <div className='app-info'>
-        <p className='fs-3 text-uppercase'>Barcha kurilgan kinolar soni:</p>
-        <p className='fs-4 text-uppercase'>Kurilgan kinolar soni:</p>
-        </div>
+        <p className='fs-3 text-uppercase'>Barcha kurilgan kinolar soni:{ allMoviesCount}</p>
+        <p className='fs-4 text-uppercase'>Sevimli kinolar soni: {favouriteMoviesCount}</p>
+        </div> 
   )
 }
 
